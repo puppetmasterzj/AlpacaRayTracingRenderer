@@ -28,6 +28,8 @@ public:
 	void ReleaseDevice();
 	void Clear();
 
+	void DoRender();
+
 	void DrawPixel(int x, int y, const Color& color);
 	
 };

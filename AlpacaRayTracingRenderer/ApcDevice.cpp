@@ -48,3 +48,14 @@ void ApcDevice::Clear()
 		}
 	}
 }
+
+void ApcDevice::DoRender()
+{
+	for (int i = 0; i < deviceHeight; i++)
+	{
+		for (int j = 0; j < deviceWidth; j++)
+		{
+			DrawPixel(j, i, Color(1, 1, 1, 1));
+		}
+	}
+}

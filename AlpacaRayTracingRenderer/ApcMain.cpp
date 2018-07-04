@@ -100,7 +100,7 @@ void Update()
 void DoRender()
 {
 	device->Clear();
-	
+	device->DoRender();
 	//Ë«»º³å
 	BitBlt(hdc, 0, 0, windowWidth, windowHeight, screenHDC, 0, 0, SRCCOPY);
 }
