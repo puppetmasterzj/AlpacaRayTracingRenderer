@@ -12,7 +12,7 @@ class Vector3
 {
 public:
 	float x, y, z, w;
-
+	Vector3() {}
 	Vector3(float fx, float fy, float fz);
 
 	 Vector3 operator + (const Vector3& right) const;
