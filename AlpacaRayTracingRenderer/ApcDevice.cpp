@@ -36,6 +36,12 @@ inline void ApcDevice::DrawPixel(int x, int y, const Color& color)
 	SetPixel(screenHDC, x, y, RGB(255 * color.r, 255 * color.g, 255 * color.b));
 }
 
+
+inline void ApcDevice::DrawPixel(int x, int y, const Vector3& vec)
+{
+	SetPixel(screenHDC, x, y, RGB(255 * vec.x, 255 * vec.y, 255 * vec.z));
+}
+
 void ApcDevice::Clear()
 {
 	BitBlt(screenHDC, 0, 0, deviceWidth, deviceHeight, NULL, NULL, NULL, BLACKNESS);
@@ -68,10 +74,21 @@ void ApcDevice::DoRender()
 
 			Vector3 rayDir = bottomLeft + horizontal * u + vertical * v;
 			Ray ray(rayOri, rayDir);
-			if (HitSphere(sphereCenter, sphereRadius, ray))
-				DrawPixel(j, i, Color(1, 0, 0, 1));
+			float result = HitSphere(sphereCenter, sphereRadius, ray);
+			if (result > 0)
+			{
+				//从球心指向碰撞点为法线方向
+				Vector3 hitPoint = ray.GetPointOnRay(result);
+				Vector3 normal = (hitPoint - sphereCenter);
+				normal.Normalize();
+				//转化到01区间可视化
+				normal = normal * 0.5f + Vector3(0.5f, 0.5f, 0.5f);
+				DrawPixel(j, i, normal);
+			}
 			else
+			{
 				DrawPixel(j, i, Color(1, 1, 1, 1));
+			}
 		}
 	}
 }
@@ -85,12 +102,15 @@ void ApcDevice::DoRender()
 //设a = dot(B,B), b = 2dot（B，A - C）, c = dot(A - C, A - C) - R * R
 //一元二次方程求根公式 b ^ 2 - 4ac >= 0 有根相交
 //////////////////////////////////////////////////////////////////////////
-bool ApcDevice::HitSphere(const Vector3& center, float radius, const Ray& ray)
+float ApcDevice::HitSphere(const Vector3& center, float radius, const Ray& ray)
 {
 	Vector3 ac = ray.ori - center; //A - C
 	float a = Vector3::Dot(ray.dir, ray.dir); //a
 	float b = 2.0f * Vector3::Dot(ray.dir, ac);//b
 	float c = Vector3::Dot(ac, ac) - radius * radius;
 	float result = b * b - 4 * a * c;
-	return result > 0;
+	if (result < 0)
+		return -1.0f;
+	//求根，去最小根为第一个相交点
+	return (-b - sqrt(result)) / (2.0 * a);
 }

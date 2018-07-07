@@ -2,9 +2,9 @@
  * \file ApcMain.cpp
  *
  * \author puppet_master
- * \date 2018/05/20
+ * \date 2018/07/07
  * \https://blog.csdn.net/puppet_master
- * \萌萌哒羊驼渲染器(?ω?) 
+ * \萌萌哒羊驼渲染器(?ω?) 光线追踪版本
  * \入口函数，包含窗口创建，FPS显示，设备创建，调用渲染，双缓冲
  *******************************************************************/
 #include "Stdfx.h"

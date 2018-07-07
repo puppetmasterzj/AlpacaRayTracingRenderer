@@ -31,8 +31,9 @@ public:
 	void DoRender();
 
 	void DrawPixel(int x, int y, const Color& color);
+	void DrawPixel(int x, int y, const Vector3& vec);
 
-	bool HitSphere(const Vector3& center, float radius, const Ray& ray);
+	float HitSphere(const Vector3& center, float radius, const Ray& ray);
 	
 };
 

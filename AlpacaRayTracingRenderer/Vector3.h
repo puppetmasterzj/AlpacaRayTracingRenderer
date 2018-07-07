@@ -2,7 +2,7 @@
  * \file Vector3.h
  *
  * \author puppet_master
- * \date 2018.5.20添加注释
+ * \date 2018/07/07
  * \https://blog.csdn.net/puppet_master
  * 向量类，实现向量间各种运算
  ************************************************************/
