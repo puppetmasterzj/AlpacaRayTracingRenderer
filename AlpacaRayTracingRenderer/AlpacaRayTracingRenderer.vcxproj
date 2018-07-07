@@ -116,12 +116,15 @@
     <ClCompile Include="ApcDevice.cpp" />
     <ClCompile Include="ApcMain.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApcDevice.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="HitableObject.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stdfx.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>

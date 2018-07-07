@@ -1,4 +1,5 @@
 #include "ApcDevice.h"
+#include "Sphere.h"
 
 ApcDevice::ApcDevice()
 {
@@ -20,6 +21,11 @@ void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
 	{
 		zBuffer[i] = new float[deviceWidth];
 	}
+
+	//暂时在此处添加对象
+	Sphere* sphere1 = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f);
+	hitableObjects.push_back(sphere1);
+
 }
 
 void ApcDevice::ReleaseDevice()
@@ -62,9 +68,6 @@ void ApcDevice::DoRender()
 	Vector3 horizontal(4.0f, 0.0f, 0.0f);
 	Vector3 vertical(0.0f, 2.0f, 0.0f);
 
-	Vector3 sphereCenter(0.0f, 0.0f, -1.0f);
-	float sphereRadius = 0.5f;
-
 	for (int i = 0; i < deviceHeight; i++)
 	{
 		for (int j = 0; j < deviceWidth; j++)
@@ -74,15 +77,11 @@ void ApcDevice::DoRender()
 
 			Vector3 rayDir = bottomLeft + horizontal * u + vertical * v;
 			Ray ray(rayOri, rayDir);
-			float result = HitSphere(sphereCenter, sphereRadius, ray);
-			if (result > 0)
+			HitResult result;
+			bool hit = HitDetect(ray, 0.0f, 10000.0f, result);
+			if (hit)
 			{
-				//从球心指向碰撞点为法线方向
-				Vector3 hitPoint = ray.GetPointOnRay(result);
-				Vector3 normal = (hitPoint - sphereCenter);
-				normal.Normalize();
-				//转化到01区间可视化
-				normal = normal * 0.5f + Vector3(0.5f, 0.5f, 0.5f);
+				Vector3 normal = result.normal * 0.5f + Vector3(0.5f, 0.5f, 0.5f);
 				DrawPixel(j, i, normal);
 			}
 			else
@@ -93,24 +92,20 @@ void ApcDevice::DoRender()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-//球体方程设为球心C（xc,yc,zc），半径R，向量A + B * t
-//判断一点P xyz是否在球上或内，(x - cx)(x - cx) + (y - cy)(y - cy) + (z - cz)(z - cz) = R * R
-//即dot((P - C), (P - C)) = R * R
-//代入向量方程 dot((A + Bt - C), (A + Bt - C)) = R * R
-//t*t*dot(B,B) + 2t*dot(B, A - C) + dot（A - C， A - C）- R * R = 0
-//设a = dot(B,B), b = 2dot（B，A - C）, c = dot(A - C, A - C) - R * R
-//一元二次方程求根公式 b ^ 2 - 4ac >= 0 有根相交
-//////////////////////////////////////////////////////////////////////////
-float ApcDevice::HitSphere(const Vector3& center, float radius, const Ray& ray)
+bool ApcDevice::HitDetect(const Ray& ray, float min_t, float max_t, HitResult& result)
 {
-	Vector3 ac = ray.ori - center; //A - C
-	float a = Vector3::Dot(ray.dir, ray.dir); //a
-	float b = 2.0f * Vector3::Dot(ray.dir, ac);//b
-	float c = Vector3::Dot(ac, ac) - radius * radius;
-	float result = b * b - 4 * a * c;
-	if (result < 0)
-		return -1.0f;
-	//求根，去最小根为第一个相交点
-	return (-b - sqrt(result)) / (2.0 * a);
+	bool hit = false;
+	float cloest = max_t;
+	HitResult tempResult;
+
+	for (HitableObjList::iterator it = hitableObjects.begin(); it != hitableObjects.end(); ++it)
+	{
+		if ((*it)->Hit(ray, min_t, max_t, tempResult))
+		{
+			hit = true;
+			cloest = tempResult.t;
+			result = tempResult;
+		}
+	}
+	return hit;
 }

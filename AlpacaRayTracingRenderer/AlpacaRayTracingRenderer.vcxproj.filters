@@ -27,6 +27,9 @@
     <ClCompile Include="ApcDevice.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color.h">
@@ -42,6 +45,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Ray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HitableObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
