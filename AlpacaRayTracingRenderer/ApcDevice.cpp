@@ -51,15 +51,22 @@ void ApcDevice::Clear()
 
 void ApcDevice::DoRender()
 {
-	Vector3 rayOri(400.0f, 200.0f, 0.0f);
-	Vector3 sphereCenter(400.0f, 200.0f, -25.0f);
-	float sphereRadius = 20.0f;
+	Vector3 rayOri(0.0f, 0.0f, 0.0f);
+	Vector3 bottomLeft(-2.0f, -1.0f, -1.0f);
+	Vector3 horizontal(4.0f, 0.0f, 0.0f);
+	Vector3 vertical(0.0f, 2.0f, 0.0f);
+
+	Vector3 sphereCenter(0.0f, 0.0f, -1.0f);
+	float sphereRadius = 0.5f;
 
 	for (int i = 0; i < deviceHeight; i++)
 	{
 		for (int j = 0; j < deviceWidth; j++)
 		{
-			Vector3 rayDir(j, i, -50.0f);
+			float u = float(j) / float(deviceWidth);
+			float v = float(i) / float(deviceHeight);
+
+			Vector3 rayDir = bottomLeft + horizontal * u + vertical * v;
 			Ray ray(rayOri, rayDir);
 			if (HitSphere(sphereCenter, sphereRadius, ray))
 				DrawPixel(j, i, Color(1, 0, 0, 1));
