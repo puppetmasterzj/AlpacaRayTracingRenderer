@@ -2,15 +2,15 @@
  * \file ApcDevice.h
  *
  * \author puppet_master
- * \date 2018/05/20添加注释
+ * \date 2018/07/07
  * \https://blog.csdn.net/puppet_master
- * \羊驼软渲染器AlpacaSoftRenderer的主要实现
- * \包含MVP矩阵生成，视口映射，简单裁剪，深度测试，光栅化，数据插值
- * \包含部分测试函数，基本的2D绘制
+ * 光线追踪渲染器主要渲染功能
  *******************************************************************/
 #pragma once
 #include "Stdfx.h"
 #include "Color.h"
+#include "Ray.h"
+
 
 class ApcDevice
 {
@@ -31,6 +31,8 @@ public:
 	void DoRender();
 
 	void DrawPixel(int x, int y, const Color& color);
+
+	bool HitSphere(const Vector3& center, float radius, const Ray& ray);
 	
 };
 

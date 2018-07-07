@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClInclude Include="ApcDevice.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="Stdfx.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>

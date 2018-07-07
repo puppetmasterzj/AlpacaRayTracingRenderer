@@ -10,8 +10,8 @@
 #include "Stdfx.h"
 #include "ApcDevice.h"
 
-static const int windowWidth = 600;
-static const int windowHeight = 450;
+static const int windowWidth = 800;
+static const int windowHeight = 400;
 const char* windowTitle = "Alpaca Ray-Tracing Renderer";
 HDC hdc = NULL;
 HDC screenHDC = NULL;
