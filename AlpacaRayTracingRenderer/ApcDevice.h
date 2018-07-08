@@ -9,8 +9,8 @@
 #pragma once
 #include "Stdfx.h"
 #include "Color.h"
-#include "Ray.h"
 #include "HitableObject.h"
+#include "Camera.h"
 
 typedef std::vector<HitableObject*> HitableObjList;
 
@@ -23,6 +23,7 @@ private:
 	float** zBuffer;
 
 	HitableObjList hitableObjects;
+	Camera camera;
 
 public:
 	ApcDevice();

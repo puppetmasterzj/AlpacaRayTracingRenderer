@@ -24,8 +24,11 @@ void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
 
 	//暂时在此处添加对象
 	Sphere* sphere1 = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f);
+	Sphere* sphere2 = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f);
+	Sphere* sphere3 = new Sphere(Vector3(2.0f, 0.0f, -1.0f), 0.5f);
 	hitableObjects.push_back(sphere1);
-
+	hitableObjects.push_back(sphere2);
+	hitableObjects.push_back(sphere3);
 }
 
 void ApcDevice::ReleaseDevice()
@@ -63,20 +66,15 @@ void ApcDevice::Clear()
 
 void ApcDevice::DoRender()
 {
-	Vector3 rayOri(0.0f, 0.0f, 0.0f);
-	Vector3 bottomLeft(-2.0f, -1.0f, -1.0f);
-	Vector3 horizontal(4.0f, 0.0f, 0.0f);
-	Vector3 vertical(0.0f, 2.0f, 0.0f);
-
 	for (int i = 0; i < deviceHeight; i++)
 	{
 		for (int j = 0; j < deviceWidth; j++)
 		{
+			//float random = rand
 			float u = float(j) / float(deviceWidth);
 			float v = float(i) / float(deviceHeight);
 
-			Vector3 rayDir = bottomLeft + horizontal * u + vertical * v;
-			Ray ray(rayOri, rayDir);
+			Ray ray = camera.GetRay(u, v);
 			HitResult result;
 			bool hit = HitDetect(ray, 0.0f, 10000.0f, result);
 			if (hit)
