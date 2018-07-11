@@ -8,17 +8,20 @@
  *******************************************************************/
 #pragma once
 #include "Ray.h"
+#include "Material.h"
 
 struct HitResult
 {
 	float t;
 	Vector3 position;
 	Vector3 normal;
+	Material *material;
 };
 
 class HitableObject
 {
 public:
 	virtual bool Hit(const Ray& ray, float min_t, float max_t, HitResult& result) const = 0;
+	Material *material;
 };
 

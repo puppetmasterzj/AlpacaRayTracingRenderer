@@ -1,5 +1,8 @@
 #include "ApcDevice.h"
 #include "Sphere.h"
+#include "Math.h"
+#include "LambertMaterial.h"
+#include "MetalMaterial.h"
 
 ApcDevice::ApcDevice()
 {
@@ -23,9 +26,9 @@ void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
 	}
 
 	//暂时在此处添加对象
-	Sphere* sphere1 = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f);
-	Sphere* sphere2 = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f);
-	Sphere* sphere3 = new Sphere(Vector3(2.0f, 0.0f, -1.0f), 0.5f);
+	Sphere* sphere1 = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f); sphere1->material = new LambertMaterial(Color(0.8f, 0.3f, 0.5f, 1));
+	Sphere* sphere2 = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f); sphere2->material = new MetalMaterial(Color(0.8f, 0.6f, 0.2f, 1));
+	Sphere* sphere3 = new Sphere(Vector3(2.0f, 0.0f, -1.0f), 0.5f); sphere3->material = new MetalMaterial(Color(0.4f, 0.6f, 0.2f, 1));
 	hitableObjects.push_back(sphere1);
 	hitableObjects.push_back(sphere2);
 	hitableObjects.push_back(sphere3);
@@ -64,24 +67,21 @@ void ApcDevice::Clear()
 	}
 }
 
-Vector3 ApcDevice::RandomVectorInUnitSphere()
-{
-	Vector3 pos;
-	do 
-	{
-		pos = Vector3(Random01(), Random01(), Random01()) * 2.0f - Vector3(1.0, 1.0, 1.0);
-	} while (pos.Magnitude() >= 1.0f);
-	return pos;
-}
-
-Color ApcDevice::Render(const Ray& ray, int count)
+Color ApcDevice::Render(const Ray& ray, int depth)
 {
 	HitResult result;
-	if (HitDetect(ray, 0.0f, 10000.0f, result) && count < 5)
+	if (HitDetect(ray, 0.0f, 10000.0f, result))
 	{
-		Vector3 target = result.position + result.normal + RandomVectorInUnitSphere();
-		Ray newRay(result.position, target - result.position);
-		return Render(newRay, ++count) * 0.5f;
+		Ray scatterRay;
+		Color attenuation;
+		if (depth < 50 && result.material->Scatter(ray, result, attenuation, scatterRay))
+		{
+			return Render(scatterRay, ++depth) * attenuation;
+		}
+		else
+		{
+			return Color(0, 0, 0, 0);
+		}
 	}
 	else
 	{
@@ -98,8 +98,8 @@ void ApcDevice::DoRender()
 			Color color(0, 0, 0, 1);
 			for (int k = 0; k < 10; k++)
 			{
-				float u = float(j + Random01()) / float(deviceWidth);
-				float v = float(i + Random01()) / float(deviceHeight);
+				float u = float(j + Math::Random01()) / float(deviceWidth);
+				float v = float(i + Math::Random01()) / float(deviceHeight);
 
 				Ray ray = camera.GetRay(u, v);
 				color = color + Render(ray, 0);
@@ -123,6 +123,7 @@ bool ApcDevice::HitDetect(const Ray& ray, float min_t, float max_t, HitResult& r
 		{
 			hit = true;
 			cloest = tempResult.t;
+			tempResult.material = (*it)->material;
 			result = tempResult;
 		}
 	}

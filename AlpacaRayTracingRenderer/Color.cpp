@@ -42,6 +42,12 @@ Color Color::operator / (float value) const
 	return returnValue;
 }
 
+Color Color::operator*= (const Color& right) const
+{
+	Color returnValue(r * right.r, g * right.g, b * right.b, a * right.a);
+	return returnValue;
+}
+
 Color Color::Lerp(const Color& left, const Color& right, float t)
 {
 	return left + (right - left) * t;

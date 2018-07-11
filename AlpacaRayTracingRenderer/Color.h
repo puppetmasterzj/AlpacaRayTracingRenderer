@@ -20,6 +20,7 @@ public:
 	Color operator * (const Color& right) const;
 	Color operator * (float value) const;
 	Color operator / (float value) const;
+	Color operator *= (const Color& right) const;
 	static Color Lerp(const Color& left, const Color& right, float t);
 	static Color white;
 };

@@ -32,6 +32,12 @@ Vector3 Vector3::operator/(float value)const
 	return returnValue;
 }
 
+Vector3 Vector3::operator*=(const Vector3& right)
+{
+	Vector3 returnValue(x * right.x, y * right.y, z * right.z);
+	return returnValue;
+}
+
 float Vector3::SquareMagnitude()
 {
 	return Dot(*this, *this);

@@ -124,6 +124,10 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="HitableObject.h" />
+    <ClInclude Include="LambertMaterial.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="MetalMaterial.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stdfx.h" />

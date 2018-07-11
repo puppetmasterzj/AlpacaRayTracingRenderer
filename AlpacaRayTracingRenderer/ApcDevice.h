@@ -38,10 +38,7 @@ public:
 	void DrawPixel(int x, int y, const Color& color);
 	void DrawPixel(int x, int y, const Vector3& vec);
 
-	float Random01() {return rand() / float(RAND_MAX);}
-	Vector3 RandomVectorInUnitSphere();
-
-	Color Render(const Ray& ray, int count);
+	Color Render(const Ray& ray, int depth);
 	bool HitDetect(const Ray& ray, float min_t, float max_t, HitResult& result);
 	
 };
