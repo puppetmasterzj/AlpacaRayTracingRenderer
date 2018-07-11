@@ -70,22 +70,31 @@ void ApcDevice::DoRender()
 	{
 		for (int j = 0; j < deviceWidth; j++)
 		{
-			//float random = rand
-			float u = float(j) / float(deviceWidth);
-			float v = float(i) / float(deviceHeight);
+			Color color(0, 0, 0, 1);
+			for (int k = 0; k < 10; k++)
+			{
+				float randomu = rand() / float(RAND_MAX);
+				float randomv = rand() / float(RAND_MAX);
+				float u = float(j + randomu) / float(deviceWidth);
+				float v = float(i + randomv) / float(deviceHeight);
 
-			Ray ray = camera.GetRay(u, v);
-			HitResult result;
-			bool hit = HitDetect(ray, 0.0f, 10000.0f, result);
-			if (hit)
-			{
-				Vector3 normal = result.normal * 0.5f + Vector3(0.5f, 0.5f, 0.5f);
-				DrawPixel(j, i, normal);
+				Ray ray = camera.GetRay(u, v);
+				HitResult result;
+				bool hit = HitDetect(ray, 0.0f, 10000.0f, result);
+				if (hit)
+				{
+					Vector3 normal = result.normal * 0.5f + Vector3(0.5f, 0.5f, 0.5f);
+					Color col(normal.x, normal.y, normal.z, 1.0);
+					color = color + col;
+				}
+				else
+				{
+					color = color + Color(1, 1, 1, 1);
+				}
 			}
-			else
-			{
-				DrawPixel(j, i, Color(1, 1, 1, 1));
-			}
+			color = color / 10.0f;
+
+			DrawPixel(j, i, color);
 		}
 	}
 }

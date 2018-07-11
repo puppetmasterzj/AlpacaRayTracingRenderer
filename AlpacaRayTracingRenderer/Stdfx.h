@@ -6,4 +6,5 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
+#include <stdlib.h>
 #pragma comment( lib,"winmm.lib" )
