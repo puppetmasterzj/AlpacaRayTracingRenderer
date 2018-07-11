@@ -64,6 +64,31 @@ void ApcDevice::Clear()
 	}
 }
 
+Vector3 ApcDevice::RandomVectorInUnitSphere()
+{
+	Vector3 pos;
+	do 
+	{
+		pos = Vector3(Random01(), Random01(), Random01()) * 2.0f - Vector3(1.0, 1.0, 1.0);
+	} while (pos.Magnitude() >= 1.0f);
+	return pos;
+}
+
+Color ApcDevice::Render(const Ray& ray, int count)
+{
+	HitResult result;
+	if (HitDetect(ray, 0.0f, 10000.0f, result) && count < 5)
+	{
+		Vector3 target = result.position + result.normal + RandomVectorInUnitSphere();
+		Ray newRay(result.position, target - result.position);
+		return Render(newRay, ++count) * 0.5f;
+	}
+	else
+	{
+		return Color(1.0f, 1.0f, 1.0f, 1.0f);
+	}
+}
+
 void ApcDevice::DoRender()
 {
 	for (int i = 0; i < deviceHeight; i++)
@@ -73,24 +98,11 @@ void ApcDevice::DoRender()
 			Color color(0, 0, 0, 1);
 			for (int k = 0; k < 10; k++)
 			{
-				float randomu = rand() / float(RAND_MAX);
-				float randomv = rand() / float(RAND_MAX);
-				float u = float(j + randomu) / float(deviceWidth);
-				float v = float(i + randomv) / float(deviceHeight);
+				float u = float(j + Random01()) / float(deviceWidth);
+				float v = float(i + Random01()) / float(deviceHeight);
 
 				Ray ray = camera.GetRay(u, v);
-				HitResult result;
-				bool hit = HitDetect(ray, 0.0f, 10000.0f, result);
-				if (hit)
-				{
-					Vector3 normal = result.normal * 0.5f + Vector3(0.5f, 0.5f, 0.5f);
-					Color col(normal.x, normal.y, normal.z, 1.0);
-					color = color + col;
-				}
-				else
-				{
-					color = color + Color(1, 1, 1, 1);
-				}
+				color = color + Render(ray, 0);
 			}
 			color = color / 10.0f;
 
