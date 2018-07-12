@@ -26,9 +26,9 @@ void ApcDevice::InitDevice(HDC hdc, int screenWidth, int screenHeight)
 	}
 
 	//暂时在此处添加对象
-	Sphere* sphere1 = new Sphere(Vector3(0.0f, 0.0f, -1.0f), 0.5f); sphere1->material = new LambertMaterial(Color(0.8f, 0.3f, 0.5f, 1));
-	Sphere* sphere2 = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f); sphere2->material = new MetalMaterial(Color(0.8f, 0.6f, 0.2f, 1));
-	Sphere* sphere3 = new Sphere(Vector3(2.0f, 0.0f, -1.0f), 0.5f); sphere3->material = new MetalMaterial(Color(0.4f, 0.6f, 0.2f, 1));
+	Sphere* sphere1 = new Sphere(Vector3(-1.0f, 0.0f, -1.0f), 0.5f); sphere1->material = new LambertMaterial(Color(0.8f, 0.3f, 0.5f, 1));
+	Sphere* sphere2 = new Sphere(Vector3(1.0f, 0.0f, -1.0f), 0.5f); sphere2->material = new MetalMaterial(Color(0.8f, 0.8f, 0.8f, 1));
+	Sphere* sphere3 = new Sphere(Vector3(2.5f, 0.0f, -1.0f), 0.5f); sphere3->material = new MetalMaterial(Color(0.8f, 0.8f, 0.8f, 1));
 	hitableObjects.push_back(sphere1);
 	hitableObjects.push_back(sphere2);
 	hitableObjects.push_back(sphere3);
@@ -74,7 +74,7 @@ Color ApcDevice::Render(const Ray& ray, int depth)
 	{
 		Ray scatterRay;
 		Color attenuation;
-		if (depth < 50 && result.material->Scatter(ray, result, attenuation, scatterRay))
+		if (depth < 100 && result.material->Scatter(ray, result, attenuation, scatterRay))
 		{
 			return Render(scatterRay, ++depth) * attenuation;
 		}
@@ -96,7 +96,7 @@ void ApcDevice::DoRender()
 		for (int j = 0; j < deviceWidth; j++)
 		{
 			Color color(0, 0, 0, 1);
-			for (int k = 0; k < 10; k++)
+			for (int k = 0; k < 100; k++)
 			{
 				float u = float(j + Math::Random01()) / float(deviceWidth);
 				float v = float(i + Math::Random01()) / float(deviceHeight);
@@ -104,7 +104,7 @@ void ApcDevice::DoRender()
 				Ray ray = camera.GetRay(u, v);
 				color = color + Render(ray, 0);
 			}
-			color = color / 10.0f;
+			color = color / 100.0f;
 
 			DrawPixel(j, i, color);
 		}
