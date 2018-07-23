@@ -23,8 +23,11 @@ private:
 	float** zBuffer;
 
 	HitableObjList hitableObjects;
-	Camera camera;
+	Camera* camera;
 
+
+	int depthCount = 5;
+	float iteratorCount = 100.0f;
 public:
 	ApcDevice();
 	~ApcDevice();
@@ -40,6 +43,8 @@ public:
 
 	Color Render(const Ray& ray, int depth);
 	bool HitDetect(const Ray& ray, float min_t, float max_t, HitResult& result);
+
+	void InitObject();
 	
 };
 

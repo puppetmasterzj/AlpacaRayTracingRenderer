@@ -129,6 +129,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="MetalMaterial.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="RefractMaterial.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stdfx.h" />
     <ClInclude Include="Vector3.h" />

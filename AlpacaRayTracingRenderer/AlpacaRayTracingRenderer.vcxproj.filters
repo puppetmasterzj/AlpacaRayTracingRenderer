@@ -68,5 +68,8 @@
     <ClInclude Include="MetalMaterial.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RefractMaterial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

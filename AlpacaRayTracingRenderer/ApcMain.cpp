@@ -92,7 +92,7 @@ void Update()
 		else
 		{
 			DoRender();
-			ShowFPS();
+			//ShowFPS();
 		}
 	}
 } 

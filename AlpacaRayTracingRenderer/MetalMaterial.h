@@ -22,7 +22,7 @@ public :
 		normal.Normalize();
 		Vector3 reflect = Math::Reflect(vec, normal);
 
-		scatterRay = Ray(result.position, reflect + Math::RandomVectorInUnitSphere());
+		scatterRay = Ray(result.position, reflect + Math::RandomVectorInUnitSphere() * 0.1f);
 		attenuation = albedo;
 		return Vector3::Dot(reflect, normal) > 0;
 	}

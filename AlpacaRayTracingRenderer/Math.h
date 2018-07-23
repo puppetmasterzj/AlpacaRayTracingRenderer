@@ -33,5 +33,31 @@ public:
 		return vec - normal * 2.0f * Vector3::Dot(vec, normal);
 	}
 
+	//refractRatio = sin¦È' / sin¦È 
+	static bool Refract(const Vector3& vec, const Vector3& normal, float refractRatio, Vector3& refractDir)
+	{
+		Vector3 inVec = vec;
+		inVec.Normalize();
+		float dt = Vector3::Dot(inVec, normal); //cos¦È
+		float s2 = 1.0 - dt * dt; // sin¦È ^ 2
+		float st2 = refractRatio * refractRatio * s2;// sin¦È¡¯ ^ 2 = refractRato ^ 2 * sin¦È ^ 2
+		float cost2 = 1 - st2;
+		if (cost2 > 0)
+		{
+			refractDir = (inVec - normal * dt) * refractRatio - normal * sqrt(cost2);
+			return true;
+		}
+		return false;
+	}
+
+	//½üËÆ·ÆÄá¶ûÏî
+	static float Schlick(float cosine, float refractRatio)
+	{
+		float r = (1 - refractRatio) / (1 + refractRatio);
+		r = r * r;
+		return r + (1 - r) * pow((1 - cosine), 5);
+	}
+
 };
+const float PI = 3.14;
 
